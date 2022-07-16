@@ -31,7 +31,8 @@ class Form extends Component {
                 email: '',
                 phone: '',
                 age: ''
-            }
+            },
+            errorMessage: ''
          } 
     }
 
@@ -61,7 +62,6 @@ class Form extends Component {
                 break;
             case 'dob':
                 let ageValue = this.handleAge(value);
-                console.log("Age is : ", ageValue);
                 formErrors.age = ageValue < 18 ? "Minimum age should be 18*" : '';
                 break;
             default:
@@ -85,11 +85,13 @@ class Form extends Component {
                 dob: dob
             };
             users = users.concat(new_user);
-            this.setState({users});
+            let errorMessage = '';
+            this.setState({users, errorMessage});
             localStorage.setItem("users", JSON.stringify(users));
         }
         else{
-            alert("Please fill all inputs of the form!!");
+            let errorMessage = "Please fill all inputs of the form!!";
+            this.setState({errorMessage});
         }
     };
 
@@ -98,6 +100,7 @@ class Form extends Component {
             <div className='container-sm col-md-6 text-center'>
                 <div className='card mt-5'>
                     <h1 className='text-center m-3'>User Registration Form</h1>
+                    {this.state.errorMessage.length > 0 && (<div className='alert alert-danger' role={'alert'}>{this.state.errorMessage}</div>)}
                     <form onSubmit={this.handleSubmit} className='card-body'>
                         <div className='form-group mb-3 row'>
                             <div className='col-md-4 text-center'>
